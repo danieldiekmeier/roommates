@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="column-1">
+	<div class="box summary">
+		<h2>Hey {{ user.name }}</h2>
+		<p>Sieht alles knorke aus, soweit!</p>
+	</div>
+
+	<div class="box expenses">
+		<h2>Monthly Expenses</h2>
+		<table>
+			{% for expense in user.expenses() %}
+				<tr>
+					<td><a href="{{ url_for('wiki_page', category='expenses', key=expense.title) }}">{{ expense.title }}</a></td>
+					<td class="amount">{{ expense.amount|round(2, 'ceil') }}0&nbsp;</td>
+					<td>€</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+<div class="column-2">
+	<div class="box">
+		<h2>Your Tasks</h2>
+		<p>Sieht alles knorke aus, soweit!</p>
+	</div>
+
+	<div class="box">
+		<h2>I did something</h2>
+		<p>Sieht alles knorke aus, soweit!</p>
+	</div>
+</div>
+{% endblock %}

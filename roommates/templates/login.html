@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<div class="box centered">
+		<h2>Login</h2>
+		<form action="{{ url_for('login') }}" method="post">
+			<input type="mail" name="mail" placeholder="E-Mail">
+			<input type="password" name="password" placeholder="Password">
+			<input type="submit" class="button main" value="Login">
+		</form>
+	</div>
+{% endblock %}

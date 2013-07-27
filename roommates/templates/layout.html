@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Roommates</title>
+
+		<link href="{{ url_for('static', filename='stylesheets/style.css') }}" media="screen, projection" rel="stylesheet" type="text/css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	</head>
+	<body>
+		<header>
+			<div class="limiter">
+				<h1><a href="{{ url_for('index') }}">Demons Run</a></h1>
+				<nav>
+					<ul>
+						<li><a href="{{ url_for('index') }}">Dashboard</a></li>
+						<li><a href="{{ url_for('users') }}">Users</a></li>
+						<li><a href="{{ url_for('wiki') }}">Wiki</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		{% with messages = get_flashed_messages(with_categories = true) %}
+			{% if messages %}
+				<ul class="flashes">
+				{% for category, message in messages %}
+					<li class="{{ category }}">
+						<div class="limiter">{{ message|safe }}</div>
+					</li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
+		<div class="wrapper">
+			{% block body %}
+			{% endblock %}
+		</div>
+		<footer>
+
+		</footer>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+	</body>
+</html>

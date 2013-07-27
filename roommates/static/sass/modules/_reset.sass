@@ -1,0 +1,58 @@
+$main: #ff8a00
+$red: #c83434
+$green: #84c834
+$background: #eee
+
+$black10: rgba(0,0,0,0.1)
+$black20: rgba(0,0,0,0.2)
+
+$break640: "only screen and (max-width: 640px)"
+
+*
+	position: relative
+	margin: 0
+	padding: 0
+	box-sizing: border-box
+	-moz-box-sizing: border-box
+	-webkit-box-sizing: border-box
+
+.clearfix, .content
+	&:after
+		content: ''
+		display: table
+		clear: both
+
+.limiter
+	width: 100%
+	max-width: 960px
+	padding-left: 10px
+	padding-right: 10px
+	margin: auto
+
+html
+	height: 100%
+
+p
+	font-size: 1em
+	line-height: 1.5em
+	margin-bottom: 1em
+
+a
+	color: inherit
+	text-decoration: none
+	border-bottom: 1px solid $main
+	&:active
+		top: 0px
+
+/* LAYOUT */
+
+body
+	font-family: Georgia, serif
+	font-size: 16px
+	line-height: 1.5em
+	background-color: $background
+	color: #333
+	display: block
+	min-height: 100%
+	@media #{$break640}
+		font-size: 16px
