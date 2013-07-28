@@ -39,8 +39,11 @@ class Wiki:
 	def __init__(self):
 		return None
 
-	def get_page(self, category, key):
-		page = query_db('SELECT * FROM wiki WHERE category = ? and key = ?', [category, key], one=True)
+	def get_all(self):
+		return query_db('SELECT key FROM wiki ORDER BY key ASC')
+
+	def get_page(self, key):
+		page = query_db('SELECT * FROM wiki WHERE key = ?', [key], one=True)
 		if page == None:
 			return False
 		else:

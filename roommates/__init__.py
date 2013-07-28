@@ -14,6 +14,8 @@ from roommates.classes import *
 from roommates.users import *
 from roommates.wiki import *
 
+app.create_jinja_environment()
+
 def connect_db():
 	return sqlite3.connect(app.config['DATABASE'])
 

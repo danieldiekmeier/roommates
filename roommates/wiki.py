@@ -10,18 +10,20 @@ import bcrypt
 def wiki():
 	g.user = User(session.get('id'))
 
-	return render_template('wiki.html', user=g.user)
+	g.wiki = Wiki()
 
-@app.route("/wiki/<category>/<key>")
+	return render_template('wiki.html', user=g.user, wiki=g.wiki)
+
+@app.route("/wiki/<key>")
 @login_required
-def wiki_page(category, key):
+def wiki_page(key):
 	g.user = User(session.get('id'))
 	g.wiki = Wiki()
 
-	if g.wiki.get_page(category, key):
-		return render_template('wiki_page.html', user=g.user, page=g.wiki.get_page(category, key))
+	if g.wiki.get_page(key):
+		return render_template('wiki_page.html', user=g.user, page=g.wiki.get_page(key))
 	else:
-		return render_template('wiki_edit.html', values={'category': category, 'key': key, 'content': ''}, formaction='wiki_new')
+		return render_template('wiki_edit.html', values={'key': key, 'content': ''}, formaction='wiki_new')
 
 @app.route("/wiki/new", methods=['GET', 'POST'])
 @login_required
@@ -32,36 +34,33 @@ def wiki_new():
 			if value == '':
 				flash('Please fill out all the fields.', 'error')
 				return render_template('wiki_edit.html', values=request.form, formaction='wiki_new')
-		g.db.execute('INSERT INTO wiki (category, key, content) VALUES (?, ?, ?)', [
-				request.form["category"],
+		g.db.execute('INSERT INTO wiki (key, content) VALUES (?, ?)', [
 				request.form["key"],
 				request.form["content"]
 			])
 		g.db.commit()
 		flash('The new wiki page has been added.')
-		return redirect(url_for('wiki_page', category=request.form["category"], key=request.form["key"]))
+		return redirect(url_for('wiki_page', key=request.form["key"]))
 
 	return render_template('wiki_edit.html', values=[], formaction='wiki_new')
 
-@app.route("/wiki/<category>/<key>/edit", methods=['GET', 'POST'])
+@app.route("/wiki/<key>/edit", methods=['GET', 'POST'])
 @login_required
-def wiki_edit(category, key):
+def wiki_edit(key):
 	if request.method == 'POST':
 		for key, value in request.form.items():
 			if value == '':
 				flash('Please fill out all the fields.', 'error')
 				return render_template('wiki_edit.html', values=request.form, formaction='wiki_new')
-		g.db.execute('UPDATE wiki SET category=?, key=?, content=? WHERE category=? and key=?', [
-				request.form["category"],
+		g.db.execute('UPDATE wiki SET key=?, content=? WHERE key=?', [
 				request.form["key"],
 				request.form["content"],
-				request.form["category"],
 				request.form["key"]
 			])
 		g.db.commit()
 		flash('The wiki page has been changed.')
-		return redirect(url_for('wiki_page', category=request.form["category"], key=request.form["key"]))
+		return redirect(url_for('wiki_page', key=request.form["key"]))
 
 	g.wiki = Wiki()
 
-	return render_template('wiki_edit.html', values={'category': category, 'key': key, 'content': g.wiki.get_page(category, key)['md_content']}, formaction='wiki_edit')
+	return render_template('wiki_edit.html', values={'key': key, 'content': g.wiki.get_page(key)['md_content']}, formaction='wiki_edit')

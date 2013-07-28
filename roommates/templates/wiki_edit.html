@@ -4,11 +4,10 @@
 
 <div class="wiki">
 		<div class="buttons">
-			<a href="{{ url_for('wiki_page', category=values.category, key=values.key) if formaction == 'wiki_edit' else url_for('wiki') }}" class="button">Discard</a>
+			<a href="{{ url_for('wiki_page', key=values.key) if formaction == 'wiki_edit' else url_for('wiki') }}" class="button">Discard</a>
 		</div>
 		<h2>{{ 'Edit' if formaction == 'wiki_edit' else 'New' }} Wiki Page</h2>
 		<form action="{{ url_for( formaction, category=values.category, key=values.key ) if formaction == 'wiki_edit' else url_for( formaction ) }}" method="post">
-			<input type="text" name="category" placeholder="category" value="{{ values.category }}">
 			<input type="text" name="key" placeholder="key" value="{{ values.key }}">
 			<textarea name="content" placeholder="Content">{{ values.content }}</textarea>
 			<input type="submit" class="button main" value="Save">

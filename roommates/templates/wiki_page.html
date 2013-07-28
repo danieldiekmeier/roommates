@@ -5,13 +5,13 @@
 <div class="wiki">
 
 	<div class="buttons">
-		<a href="{{ url_for('wiki_edit', category=page.category, key=page.key) }}" class="button">Edit</a>
+		<a href="{{ url_for('wiki_edit', key=page.key) }}" class="button">Edit</a>
 	</div>
 
-	<h2>{{ page.key }}</h2>
+	<h2>{{ page.key|replace('_', ' ') }}</h2>
 
 	<section class="wiki-content">
-		{{ page.content|safe }}
+		{{ page.content|link_wiki|safe }}
 	</section>
 
 </div>

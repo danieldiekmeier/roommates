@@ -9,7 +9,7 @@
 		<table>
 			{% for user in users %}
 				<tr class="user-{{ user.id }} {{ loop.cycle('even', 'odd') }}">
-					<td>{{ user.name }} {{ user.last_name }}</td>
+					<td><a href="{{ url_for('wiki_page', key=user.name + '_' + user.last_name) }}">{{ user.name }} {{ user.last_name }}</a></td>
 					<td><a href="mailto:{{ user.mail }}">{{ user.mail }}</a></td>
 					<td>{{ user.days_to_birthday() }} days until birthday</td>
 				</tr>

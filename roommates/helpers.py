@@ -5,6 +5,20 @@ from roommates import app
 from flask import session, redirect, url_for, g
 from functools import wraps
 
+@app.template_filter()
+def reverse(s):
+	return s[::-1]
+
+@app.template_filter()
+def link_wiki(content):
+	while '==' in content:
+		parts = content.split('==', 2)
+
+		parts[1] = '<a href="' + url_for( 'wiki_page', key=parts[1] ) + '">' + parts[1].replace('_', ' ') + '</a>'
+		print parts
+		content = ''.join(parts)
+	return content
+
 def login_required(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):
