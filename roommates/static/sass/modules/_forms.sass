@@ -1,3 +1,12 @@
+label
+	padding-top: 10px
+	display: block
+	margin-left: 10px
+	&:first-child
+		padding-top: 0px
+	&:after
+		content: ':'
+
 input, textarea
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 	font-size: 1em
@@ -15,5 +24,12 @@ input, textarea
 		padding: 0
 		padding-left: 20px
 		padding-right: 20px
+	label + &
+		margin-top: 0px
+	& + p
+		margin-top: 3px
+		margin-left: 10px
+		margin-bottom: 0px
+		font-size: 0.75em
 textarea
 	height: 100px

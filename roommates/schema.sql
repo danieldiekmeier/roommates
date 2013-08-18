@@ -7,12 +7,27 @@ CREATE TABLE "expenses" (
 );
 
 
+CREATE TABLE "messages" (
+"id" INTEGER PRIMARY KEY AUTOINCREMENT,
+"author" INTEGER,
+"message" TEXT,
+"date" TEXT
+);
+
+
 CREATE TABLE "purchases" (
 "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "title" TEXT,
-"frequency" INTEGER,
 "amount" INTEGER,
-"votes" TEXT
+"date" TEXT
+);
+
+
+CREATE TABLE "uploads" (
+"id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+"wiki_id" INTEGER,
+"description" TEXT,
+"filename" TEXT
 );
 
 

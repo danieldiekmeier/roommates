@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="box centered">
+	{% if step == 0 %}
+
+		<h2>Welcome to Roommates</h2>
+		<p>To get started, we'll have to create <strong>database</strong>, a <strong>configuration file</strong> with your configuration in it and the first <strong>user account</strong>, so you can log in and create accounts for your roommates.</p>
+		<p>If you want to set Roommates up manually or this setup client doesn't work for you, just go to <a href="{{ url_for('setup', step=1337) }}">Step 1337.</a></p>
+
+		<div class="clearfix">
+			<a href="{{ url_for('setup', step=step+1) }}" class="button main">Go To Setup</a>
+		</div>
+
+	{% elif step == 1 %}
+
+		<h2>Setup</h2>
+
+		<form action="{{ url_for('setup', step=step) }}" method="post">
+
+			<label for="title">Title of the Site</label>
+			<input type="text" name="title" id="title" placeholder="Title of the Site" value="Roommates"/>
+			<p>What you want your installation to be called. This will show up in the header.</p>
+
+			<label for="database">Database Name</label>
+			<input type="text" name="database" id="database" placeholder="Name of the database" value="roommates.db"/>
+			<p>A filename should suffice, but if you have a certain directory in mind, you can enter that, as well.</p>
+
+			<label for="currency">Currency Symbol</label>
+			<input type="text" name="currency" id="currency" placeholder="Currency Symbol" value="€"/>
+			<p>The currency symbol that will be used throughout the site.</p>
+
+			<label for="upload_folder">Upload Folder</label>
+			<input type="text" name="upload_folder" id="upload_folder" placeholder="/path/to/some/folder" value="/Users/Daniel/dev/python/roommates/roommates/uploads" />
+			<p>This is where your uploads will be saved. Should not be publicly accessible.</p>
+
+
+			<label for="name">Your First Name</label>
+			<input type="text" name="name" id="name" placeholder="First Name" value="Daniel" />
+
+			<label for="last_name">Your Last Name</label>
+			<input type="text" name="last_name" id="last_name" placeholder="Last Name" value="Diekmeier" />
+
+			<label for="mail">Your E-Mail Adress</label>
+			<input type="text" name="mail" id="mail" placeholder="E-Mail" value="danieldiekmeier@gmail.com" />
+
+			<label for="birthday">Your Birthday</label>
+			<input type="text" name="birthday" id="birthday" placeholder="YYYY-MM-DD" value="1993-04-23" />
+
+			<label for="password">Your Password</label>
+			<input type="password" name="password" id="password" placeholder="Password" value="geheim" />
+
+			<input type="submit" class="button main" value="Finish!">
+		</form>
+
+	{% elif step == 2 %}
+
+	{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,3 +1,5 @@
 /roommates/static/.sass-cache
 *.pyc
 /roommates.db
+/roommates/config.py
+/roommates/uploads/

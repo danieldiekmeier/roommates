@@ -77,7 +77,7 @@ class Wiki:
 
 class Page:
 	def __init__(self, param):
-		if param == str(param):
+		if param == unicode(param):
 			key = param
 			page = query_db('SELECT * FROM wiki WHERE key = ?', [key], one=True)
 		else:

@@ -4,10 +4,17 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 import sqlite3, datetime, bcrypt
 from contextlib import closing # for database-things
 
+import os
+
 # create our little application
 app = Flask(__name__)
-app.config.from_object(__name__)
-app.config.from_pyfile('config.py')
+
+try:
+	app.config.from_pyfile('config.py')
+	app.config['HAS_CONFIG'] = True
+except IOError:
+	app.config['HAS_CONFIG'] = False
+
 
 from roommates.helpers import *
 from roommates.classes import *
@@ -15,29 +22,27 @@ from roommates.users import *
 from roommates.wiki import *
 from roommates.messages import *
 from roommates.purchases import *
+from roommates.setup import *
 
 app.create_jinja_environment()
 
 def connect_db():
 	return sqlite3.connect(app.config['DATABASE'])
 
-def init_db():
-	with closing(connect_db()) as db:
-		with app.open_resource('schema.sql') as f:
-			db.cursor().executescript(f.read())
-		db.commit()
-
 @app.before_request
 def before_request():
-	g.db = connect_db()
+	if app.config['HAS_CONFIG']:
+		g.db = connect_db()
 
 @app.teardown_request
 def teardown_request(exception):
-	g.db.close()
+	if app.config['HAS_CONFIG']:
+		g.db.close()
 
 # VIEWS
 
 @app.route("/")
+@check_config
 @login_required
 def index():
 	g.user = User(session.get('id'))
