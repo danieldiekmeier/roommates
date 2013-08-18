@@ -17,23 +17,14 @@ def users():
 
 
 
-@app.route("/add_user", methods=['GET', 'POST'])
+@app.route("/users/add", methods=['GET', 'POST'])
 @login_required
-def add_user():
-
-	values = {
-		'name': '',
-		'last_name': '',
-		'mail': '',
-		'birthday': '',
-		'password': '',
-	}
-
+def users_add():
 	if request.method == 'POST':
 		for key, value in request.form.items():
 			if value == '':
 				flash('Please fill out all the fields.', 'error')
-				return render_template('user_add.html', values=request.form)
+				return render_template('users_add.html', values=request.form)
 		g.db.execute('INSERT INTO users (name, last_name, mail, birthday, password) VALUES (?, ?, ?, ?, ?)', [
 				request.form["name"],
 				request.form["last_name"],
@@ -43,7 +34,7 @@ def add_user():
 			])
 		g.db.commit()
 		flash('The new user "' + request.form['name'] + ' ' + request.form['last_name'] + '" has been added.')
-	return render_template('user_add.html', values=[])
+	return render_template('users_add.html', values=[])
 
 @app.route("/remove_user/<id>", methods=['GET'])
 @login_required

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<div class="box full">
+		<div class="buttons">
+			<a href="{{ url_for('purchases_add') }}" class="button">Add</a>
+		</div>
+		<h2>Purchases</h2>
+		<table>
+			<tr>
+				<th>Purchase</th>
+				<th>Original Price</th>
+				<th>Current Value</th>
+				<th>Purchase Date</th>
+			</tr>
+			{% for purchase in purchases %}
+				<tr class="purchase-{{ purchase.id }} {{ loop.cycle('even', 'odd') }}">
+					<td><a href="{{ url_for('wiki_page', key=purchase.title|replace(' ', '_')) }}">{{ purchase.title }}</a></td>
+					<td>{{ purchase.amount|currency }} {{ config.CURRENCY }}</td>
+					<td>{{ purchase.current_value()|currency }} {{ config.CURRENCY }}</td>
+					<td>{{ purchase.date.day }}. {{ purchase.date.month }}. {{ purchase.date.year }}</td>
+					<td class="edit"><a href="{{ url_for('purchases_edit', id=purchase.id) }}">Edit</a></td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	</div>
+{% endblock %}

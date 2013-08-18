@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<div class="box centered">
+
+		<div class="buttons">
+			<a href="{{ url_for('wiki_page', key=page.key) }}" class="button">{{ page.key }}</a>
+		</div>
+
+		<h2>Upload File</h2>
+		<form action="{{ url_for('wiki_upload', id=id) }}" method="post" autocomplete="off" enctype="multipart/form-data">
+			<input type="text" name="description" placeholder="Description">
+			<input type="file" name="file" class="file">
+			<input type="submit" class="button main" value="Upload">
+		</form>
+	</div>
+{% endblock %}

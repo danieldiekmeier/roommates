@@ -5,12 +5,23 @@
 <div class="wiki">
 
 	<div class="buttons">
+		<a href="{{ url_for('wiki_upload', id=page.id) }}" class="button">Attach file</a>
 		<a href="{{ url_for('wiki_edit', key=page.key) }}" class="button">Edit</a>
 	</div>
 
 	<h2>{{ page.key|replace('_', ' ') }}</h2>
 
 	<section class="wiki-content">
+		{% if page.attached_files() %}
+			<div class="attached-files">
+				<h3>Attached files</h3>
+				<ul>
+					{% for file in page.attached_files() %}
+						<li><a href="{{ url_for('uploaded_file', key=page.key, filename=file.filename) }}">{{ file.description }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
 		{{ page.content|link_wiki|safe }}
 	</section>
 

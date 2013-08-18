@@ -4,19 +4,24 @@
 		<title>Roommates</title>
 
 		<link href="{{ url_for('static', filename='stylesheets/style.css') }}" media="screen, projection" rel="stylesheet" type="text/css" />
+		<!-- <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/ui-lightness/jquery-ui.css') }}" type="text/css" media="all" />-->
+
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	</head>
 	<body>
 		<header>
 			<div class="limiter">
 				<h1><a href="{{ url_for('index') }}">Demons Run</a></h1>
-				<nav>
-					<ul>
-						<li><a href="{{ url_for('index') }}">Dashboard</a></li>
-						<li><a href="{{ url_for('users') }}">Users</a></li>
-						<li><a href="{{ url_for('wiki') }}">Wiki</a></li>
-					</ul>
-				</nav>
+				{% if session.id %}
+					<nav>
+						<ul>
+							<li><a href="{{ url_for('index') }}">Dashboard</a></li>
+							<li><a href="{{ url_for('users') }}">Users</a></li>
+							<li><a href="{{ url_for('purchases') }}">Purchases</a></li>
+							<li><a href="{{ url_for('wiki') }}">Wiki</a></li>
+						</ul>
+					</nav>
+					{% endif %}
 			</div>
 		</header>
 		{% with messages = get_flashed_messages(with_categories = true) %}
@@ -38,6 +43,17 @@
 
 		</footer>
 
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+
+		currently using local jquery-->
+		<script type="text/javascript" src="{{ url_for('static', filename='javascripts/jquery.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='javascripts/jquery-ui.js') }}"></script>
+
+
+		<script>
+			$(function() {
+				$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd", firstDay: 1 });
+			});
+		</script>
 	</body>
 </html>

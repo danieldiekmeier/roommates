@@ -4,8 +4,16 @@
 
 <div class="column-1">
 	<div class="box summary">
-		<h2>Hey {{ user.name }}</h2>
-		<p>Sieht alles knorke aus, soweit!</p>
+		<h2>Hey {{ user.name }}!</h2>
+		<ul class="reminders-list list">
+			{% for reminder in user.reminders() %}
+				<li class="{{ loop.cycle('even', 'odd') }}">
+					{% if reminder.type == 'birthday' %}
+						Birthday: {{ reminder.user }} in {{ reminder.user.days_to_birthday() }} days
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
 	</div>
 
 	<div class="box expenses">
@@ -17,9 +25,13 @@
 			{% for expense in user.expenses() %}
 				<tr class="{{ loop.cycle('even', 'odd') }}">
 					<td><a href="{{ url_for('wiki_page', key=expense.title) }}">{{ expense.title }}</a></td>
-					<td class="amount">{{ expense.amount|round(0, 'ceil')|int }}.00 €</td>
+					<td class="amount">{{ expense.amount|currency }} {{ config.CURRENCY }}</td>
 				</tr>
 			{% endfor %}
+			<tr class="sum">
+				<td>&nbsp;</td>
+				<td class="amount">{{ user.expenses()|sum(attribute='amount')|currency }} {{ config.CURRENCY }}</td>
+			</tr>
 		</table>
 	</div>
 </div>
@@ -30,9 +42,18 @@
 		<p>Sieht alles knorke aus, soweit!</p>
 	</div>
 
-	<div class="box">
-		<h2>I did something</h2>
-		<p>Sieht alles knorke aus, soweit!</p>
+	<div class="box messages">
+		<h2>Message Board</h2>
+		<form action="{{ url_for('message_new') }}" method="post" class="clearfix">
+			<textarea name="message" placeholder="New Message"></textarea>
+			<input type="submit" value="Speichern" class="button main">
+		</form>
+		<ul class="messages-list list">
+			{% for message in messages %}
+				<li class="{{ loop.cycle('even', 'odd') }}"><a href="{{ url_for('wiki_page', key=message.author.name + '_' + message.author.last_name) }}">{{ message.author.name }}</a>: {{ message.message }}</li>
+			{% endfor %}
+		</ul>
+
 	</div>
 </div>
 {% endblock %}

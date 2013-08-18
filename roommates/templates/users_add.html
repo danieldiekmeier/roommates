@@ -3,11 +3,11 @@
 {% block body %}
 	<div class="box centered">
 		<h2>New Roommate</h2>
-		<form action="{{ url_for('add_user') }}" method="post">
+		<form action="{{ url_for('users_add') }}" method="post">
 			<input type="text" name="name" placeholder="First Name" value="{{ values.name }}">
 			<input type="text" name="last_name" placeholder="Last Name" value="{{ values.last_name }}">
 			<input type="mail" name="mail" placeholder="E-Mail" value="{{ values.mail }}">
-			<input type="text" name="birthday" placeholder="Birthday (YYYY-MM-DD)" value="{{ values.birthday }}">
+			<input type="text" class="datepicker" name="birthday" placeholder="Birthday (YYYY-MM-DD)" value="{{ values.birthday }}">
 			<input type="password" name="password" placeholder="Password" value="{{ values.password }}">
 			<input type="submit" class="button main" value="Add">
 		</form>

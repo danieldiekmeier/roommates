@@ -13,6 +13,8 @@ from roommates.helpers import *
 from roommates.classes import *
 from roommates.users import *
 from roommates.wiki import *
+from roommates.messages import *
+from roommates.purchases import *
 
 app.create_jinja_environment()
 
@@ -40,7 +42,13 @@ def teardown_request(exception):
 def index():
 	g.user = User(session.get('id'))
 
-	return render_template('index.html', user=g.user)
+	messages_ids = query_db('SELECT id from messages ORDER BY id DESC LIMIT 20')
+	messages = []
+	for message_id in messages_ids:
+		message = Message(message_id['id'])
+		messages.append(message)
+
+	return render_template('index.html', user=g.user, messages=messages)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -67,15 +75,3 @@ def logout():
 	session.pop('id', None)
 	flash('You were logged out')
 	return redirect(url_for('login'))
-
-# JUST FOR DEBUGGING
-
-@app.route("/add_password")
-def password():
-	password = 'default'
-	pw_hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-
-	g.db.execute('update users set password = ? where id = 1', [pw_hashed])
-	g.db.commit()
-
-	return "done"

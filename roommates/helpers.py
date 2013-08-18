@@ -19,6 +19,20 @@ def link_wiki(content):
 		content = ''.join(parts)
 	return content
 
+@app.template_filter()
+def currency(content):
+	string = str(round(content, 2))
+
+	numbers = string.split('.')
+	print numbers
+	if numbers[1] == '0':
+		return numbers[0]
+	else:
+		if len(str(numbers[1])) == 1:
+			return numbers[0] + '.' + numbers[1] + '0'
+		else:
+			return numbers[0] + '.' + numbers[1]
+
 def login_required(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):
