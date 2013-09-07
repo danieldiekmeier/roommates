@@ -4,13 +4,20 @@
 	<div class="box centered">
 		{% if values.id %}
 			<div class="buttons">
-				<a href="{{ url_for('purchases_delete', id=values.id) }}" class="button delete">Delete</a>
+				<a href="{{ url_for('receipts_delete', id=values.id) }}" class="button delete">Delete</a>
 			</div>
 		{% endif %}
-		<h2>{% block wording %}Edit{% endblock %} Purchase</h2>
-		<form action="{% block formaction %}{{ url_for('purchases_edit', id=values.id) }}{% endblock %}" method="post" autocomplete="off">
+		<h2>{% block wording %}Edit{% endblock %} Receipt</h2>
+		<form action="{% block formaction %}{{ url_for('receipts_edit', id=values.id) }}{% endblock %}" method="post" autocomplete="off">
 			<input type="text" name="title" placeholder="Title" value="{{ values.title }}">
 			<input type="text" name="amount" placeholder="Amount" value="{{ values.amount }}">
+
+			<select name="user">
+				{% for user in users %}
+					<option value="{{ user.id }}" {% if user.id == session.id %}selected="selected"{% endif %}>{{ user }}</option>
+				{% endfor %}
+			</select>
+
 			<input type="text" name="date" class="datepicker" placeholder="Purchase Date (YYYY-MM-DD)" value="{{ values.date }}">
 			<input type="submit" class="button main" value="{% block buttonvalue %}Save{% endblock %}">
 		</form>

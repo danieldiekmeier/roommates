@@ -2,7 +2,7 @@ from roommates import app
 from roommates.helpers import *
 from roommates.classes import *
 
-from flask import session, redirect, url_for, g, request, flash, render_template
+from flask import session, redirect, url_for, g, request, flash, render_template, abort
 
 @app.route("/purchases", methods=['GET'])
 @login_required
@@ -51,4 +51,15 @@ def purchases_edit(id):
 
 	else:
 		purchase = query_db('SELECT * FROM purchases WHERE id = ?', [id], one=True)
-		return render_template('purchases_edit.html', values=purchase)
+		if purchase:
+			return render_template('purchases_edit.html', values=purchase)
+		else:
+			abort(404)
+
+@app.route('/purchases/delete/<int:id>', methods=['GET'])
+@login_required
+def purchases_delete(id):
+	g.db.execute('DELETE FROM purchases WHERE id=?', [id])
+	g.db.commit()
+	flash('The receipt has been deleted.')
+	return redirect( url_for('purchases') )

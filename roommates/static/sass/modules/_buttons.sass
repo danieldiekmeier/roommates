@@ -30,6 +30,19 @@
 			box-shadow: 0px 2px 2px $black20 inset
 			background-color: darken($main, 5%)
 			color: darken(#fff, 2%)
+	&.delete
+		background-color: $red
+		color: #fff
+		&:hover
+			background-color: lighten($red, 5%)
+		&:active
+			box-shadow: 0px 2px 2px $black20 inset
+			background-color: darken($red, 5%)
+			color: darken(#fff, 2%)
+
+form
+	.button
+		margin-top: 10px
 
 .buttons
 	float: right

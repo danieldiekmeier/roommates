@@ -22,6 +22,7 @@ from roommates.users import *
 from roommates.wiki import *
 from roommates.messages import *
 from roommates.purchases import *
+from roommates.receipts import *
 from roommates.setup import *
 
 app.create_jinja_environment()

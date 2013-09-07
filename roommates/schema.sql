@@ -1,6 +1,6 @@
 
 
-CREATE TABLE "expenses" (
+CREATE TABLE "rent" (
 "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "title" TEXT,
 "amount" INTEGER

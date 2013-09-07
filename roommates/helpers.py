@@ -2,7 +2,7 @@
 
 from roommates import app
 
-from flask import session, redirect, url_for, g
+from flask import session, redirect, url_for, g, render_template
 from functools import wraps
 
 from contextlib import closing # for database-things
@@ -68,6 +68,10 @@ def login_or_test_required(f):
 			return redirect(url_for('login'))
 		return f(*args, **kwargs)
 	return decorated_function
+
+@app.errorhandler(404)
+def page_not_found(e):
+	return render_template('404.html'), 404
 
 def query_db(query, args=(), one=False):
 	cur = g.db.execute(query, args)

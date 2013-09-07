@@ -54,6 +54,13 @@ class User:
 		print reminders
 		return reminders
 
+def list_users():
+	user_ids = query_db('SELECT * FROM users')
+	users = []
+	for user_id in user_ids:
+		user = User(user_id['id'])
+		users.append(user)
+	return users
 
 
 class Reminder:
@@ -62,8 +69,6 @@ class Reminder:
 	def birthday(self, user):
 		self.type = 'birthday'
 		self.user = user
-
-
 
 class Wiki:
 	def __init__(self):
@@ -104,30 +109,6 @@ class Page:
 			for file in files:
 				files_list.append( File(file['id']) )
 			return files_list
-
-'''
-class Page:
-	def __init__(self, key):
-		page = query_db('SELECT * FROM wiki WHERE key = ?', [key], one=True)
-		if page == None:
-			self.exists = False
-			return None
-		else:
-			self.exists = True
-			for key, value in page.items():
-				setattr(self, key, value)
-			self.md_content = self.content
-			self.content = markdown(self.content)
-		return None
-	def attached_files(self):
-		files = query_db('SELECT id FROM uploads WHERE wiki_id = ?', [self.id])
-		if files == None:
-			return False
-		else:
-			files_list = []
-			for file in files:
-				files_list.append( File(file['id']) )
-			return files_list '''
 
 class File:
 	def __init__(self, id):
@@ -176,3 +157,13 @@ class Purchase:
 			return 0
 		else:
 			return self.amount*0.95**months
+
+class Receipt:
+	def __init__(self, id):
+		receipt = query_db('SELECT * FROM receipts WHERE id = ?', [id], one=True)
+		self.id = receipt['id']
+		self.title = receipt['title']
+		self.amount = receipt['amount']
+		self.user = User(receipt['user'])
+		self.date = datetime.strptime(receipt['date'], '%Y-%m-%d')
+		return None

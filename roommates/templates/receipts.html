@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<div class="box full">
+		<div class="buttons">
+			<a href="{{ url_for('receipts_add') }}" class="button">Add</a>
+		</div>
+		<h2>Receipts</h2>
+		<table>
+			<tr>
+				<th>Title</th>
+				<th>Price</th>
+				<th>User</th>
+				<th>Date</th>
+			</tr>
+			{% for receipt in receipts %}
+				<tr class="receipt-{{ receipt.id }} {{ loop.cycle('even', 'odd') }}">
+					<td><a href="{{ url_for('wiki_page', key=receipt.title|replace(' ', '_')) }}">{{ receipt.title }}</a></td>
+					<td>{{ receipt.amount|currency }} {{ config.CURRENCY }}</td>
+					<td>{{ receipt.user }}</td>
+					<td>{{ receipt.date.day }}. {{ receipt.date.month }}. {{ receipt.date.year }}</td>
+					<td class="edit"><a href="{{ url_for('receipts_edit', id=receipt.id) }}">Edit</a></td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	</div>
+{% endblock %}
