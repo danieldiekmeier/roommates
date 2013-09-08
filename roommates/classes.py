@@ -14,6 +14,8 @@ class User:
 
 	def __str__(self):
 		return unicode(self.name) + ' ' + unicode(self.last_name)
+	def __repr__(self):
+		return self.__str__()
 
 	def init_with_dict(self, user):
 		for key, value in user.items():
@@ -35,12 +37,10 @@ class User:
 
 		for expense in expenses:
 			expense['amount'] = expense['amount'] / ( roommates['count'] / 1.00)
-		print expenses
 		return expenses
 
 	def reminders(self):
 		roommates = query_db('SELECT id FROM users')
-		print roommates
 
 		reminders = []
 
@@ -50,12 +50,11 @@ class User:
 				reminder = Reminder()
 				reminder.birthday(user)
 				reminders.append(reminder)
-		print "REMINDERS"
-		print reminders
+
 		return reminders
 
 def list_users():
-	user_ids = query_db('SELECT * FROM users')
+	user_ids = query_db('SELECT * FROM users ORDER BY id ASC')
 	users = []
 	for user_id in user_ids:
 		user = User(user_id['id'])

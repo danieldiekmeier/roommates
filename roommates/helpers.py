@@ -19,7 +19,6 @@ def link_wiki(content):
 		parts = content.split('==', 2)
 
 		parts[1] = '<a href="' + url_for( 'wiki_page', key=parts[1] ) + '">' + parts[1].replace('_', ' ') + '</a>'
-		print parts
 		content = ''.join(parts)
 	return content
 
@@ -28,7 +27,6 @@ def currency(content):
 	string = str(round(content, 2))
 
 	numbers = string.split('.')
-	print numbers
 	if numbers[1] == '0':
 		return numbers[0]
 	else:

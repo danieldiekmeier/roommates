@@ -38,8 +38,15 @@
 
 <div class="column-2">
 	<div class="box">
-		<h2>Your Tasks</h2>
-		<p>Sieht alles knorke aus, soweit!</p>
+		<h2>Spending Share</h2>
+		<table>
+			{% for user, amount in spending|dictsort(by='value') %}
+				<tr class="{{ loop.cycle('even', 'odd') }}">
+					<td>{{ user }}</td>
+					<td class="amount {% if amount > 0 %}positive{% elif amount == 0 %}neutral{% else %}negative{% endif %}">{{ amount|currency }} {{ config.CURRENCY }}</td>
+				</tr>
+			{% endfor %}
+		</table>
 	</div>
 
 	<div class="box messages">
