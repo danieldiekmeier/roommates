@@ -25,7 +25,7 @@ def receipts_add():
 		amount = check_for_commas( request.form['amount'] )
 		g.db.execute('INSERT INTO receipts (title, amount, user, date) VALUES (?, ?, ?, ?)', [
 				request.form['title'],
-				amount
+				amount,
 				request.form['user'],
 				request.form['date']
 			])
