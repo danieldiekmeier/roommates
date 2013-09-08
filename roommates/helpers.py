@@ -53,6 +53,11 @@ def check_config(f):
 		return f(*args, **kwargs)
 	return decorated_function
 
+def check_for_commas(number):
+	if ',' in number:
+		number.replace(',', '.')
+	return float(number)
+
 def no_config(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):

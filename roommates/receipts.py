@@ -22,9 +22,10 @@ def receipts_add():
 			if value == '':
 				flash('Please fill out all the fields.', 'error')
 				return render_template('receipts_add.html', values=request.form)
+		amount = check_for_commas( request.form['amount'] )
 		g.db.execute('INSERT INTO receipts (title, amount, user, date) VALUES (?, ?, ?, ?)', [
 				request.form['title'],
-				request.form['amount'],
+				amount
 				request.form['user'],
 				request.form['date']
 			])
@@ -40,9 +41,10 @@ def receipts_edit(id):
 			if value == '':
 				flash('Please fill out all the fields.', 'error')
 				return render_template('receipts_add.html', values=request.form)
+		amount = check_for_commas( request.form['amount'] )
 		g.db.execute('UPDATE receipts SET title=?, amount=?, user=?, date=? WHERE id=?', [
 				request.form["title"],
-				request.form["amount"],
+				amount,
 				request.form['user'],
 				request.form["date"],
 				id

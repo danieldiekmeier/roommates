@@ -22,9 +22,10 @@ def purchases_add():
 			if value == '':
 				flash('Please fill out all the fields.', 'error')
 				return render_template('purchases_add.html', values=request.form)
+		amount = check_for_commas( request.form['amount'] )
 		g.db.execute('INSERT INTO purchases (title, amount, date) VALUES (?, ?, ?)', [
 				request.form["title"],
-				request.form["amount"],
+				amount,
 				request.form["date"]
 			])
 		g.db.commit()
@@ -39,9 +40,10 @@ def purchases_edit(id):
 			if value == '':
 				flash('Please fill out all the fields.', 'error')
 				return render_template('purchases_add.html', values=request.form)
+		amount = check_for_commas( request.form['amount'] )
 		g.db.execute('UPDATE purchases SET title=?, amount=?, date=? WHERE id=?', [
 				request.form["title"],
-				request.form["amount"],
+				amount,
 				request.form["date"],
 				id
 			])
