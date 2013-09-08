@@ -54,8 +54,9 @@ def check_config(f):
 	return decorated_function
 
 def check_for_commas(number):
+	number = str(number)
 	if ',' in number:
-		number.replace(',', '.')
+		number = number.replace(',', '.')
 	return float(number)
 
 def no_config(f):
