@@ -39,6 +39,39 @@ class User:
 			expense['amount'] = expense['amount'] / ( roommates['count'] / 1.00)
 		return expenses
 
+	def spending(self):
+		spending_sum = query_db('SELECT SUM(amount) AS sum FROM receipts', one=True)['sum']
+		self._spending =  query_db('SELECT SUM(amount) AS sum FROM receipts WHERE user = ?', [self.id], one=True)['sum'] - (spending_sum/3)
+		return self._spending
+
+	def errand(self):
+
+		week = datetime.now().isocalendar()[1]
+
+		users = query_db('SELECT * FROM users ORDER BY id ASC')
+		number_of_users = len(users)
+
+		user_number = next(index for (index, d) in enumerate(users) if d["id"] == self.id)
+
+		part_list = range(1, number_of_users+1)
+		list = []
+		list.append(part_list[:])
+		for i in xrange(number_of_users-1):
+			part_list.append(part_list.pop(0))
+			list.append(part_list[:])
+		errand_number = list[user_number-1][(week % number_of_users)-1] - 1
+
+		errand_ids = query_db('SELECT id FROM errands ORDER BY id ASC')
+
+		print errand_ids
+
+		errands = []
+		for errand_id in errand_ids:
+			errand = Errand( errand_id['id'] )
+			errands.append(errand)
+
+		return errands[errand_number]
+
 	def reminders(self):
 		roommates = query_db('SELECT id FROM users')
 
@@ -61,6 +94,19 @@ def list_users():
 		users.append(user)
 	return users
 
+
+class Errand:
+	def __init__(self, id):
+		errand = query_db('SELECT * FROM errands WHERE id = ?', [id], one=True)
+		for key, value in errand.items():
+			setattr(self, key, value)
+		return None
+	def __str__(self):
+		return self.title
+	def __unicode__(self):
+		return self.title
+	def __repr__(self):
+		return self.title.encode('utf-8')
 
 class Reminder:
 	def __init__(self):

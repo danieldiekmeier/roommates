@@ -1,6 +1,12 @@
 
 
-CREATE TABLE "rent" (
+CREATE TABLE "errands" (
+"id" INTEGER,
+"title" TEXT
+);
+
+
+CREATE TABLE "expenses" (
 "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "title" TEXT,
 "amount" INTEGER
@@ -19,6 +25,15 @@ CREATE TABLE "purchases" (
 "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "title" TEXT,
 "amount" INTEGER,
+"date" TEXT
+);
+
+
+CREATE TABLE "receipts" (
+"id" INTEGER PRIMARY KEY AUTOINCREMENT,
+"title" TEXT,
+"amount" REAL,
+"user" INTEGER,
 "date" TEXT
 );
 

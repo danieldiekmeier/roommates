@@ -38,12 +38,24 @@
 
 <div class="column-2">
 	<div class="box">
+		<h2>This Week's Errand</h2>
+		<table>
+			{% for one_user in users %}
+				<tr class="{{ loop.cycle('even', 'odd') }}">
+					<td>{{ one_user }}</td>
+					<td class="right">{{ one_user.errand() }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+	<div class="box">
 		<h2>Spending Share</h2>
 		<table>
-			{% for user, amount in spending|dictsort(by='value') %}
+			{% for one_user in users %}
 				<tr class="{{ loop.cycle('even', 'odd') }}">
-					<td>{{ user }}</td>
-					<td class="amount {% if amount > 0 %}positive{% elif amount == 0 %}neutral{% else %}negative{% endif %}">{{ amount|currency }} {{ config.CURRENCY }}</td>
+					<td>{{ one_user }}</td>
+					<td class="right {% if one_user.spending() > 0 %}positive{% elif one_user.spending() == 0 %}neutral{% else %}negative{% endif %}">{{ one_user.spending()|currency }} {{ config.CURRENCY }}</td>
 				</tr>
 			{% endfor %}
 		</table>

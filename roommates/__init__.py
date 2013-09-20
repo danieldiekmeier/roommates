@@ -56,14 +56,8 @@ def index():
 
 
 	users = list_users()
-	spending = dict()
 
-	spending_sum = query_db('SELECT SUM(amount) AS sum FROM receipts', one=True)['sum']
-
-	for user in users:
-		spending[ user ] =  query_db('SELECT SUM(amount) AS sum FROM receipts WHERE user = ?', [user.id], one=True)['sum'] - (spending_sum/3)
-
-	return render_template('index.html', user=g.user, messages=messages, spending=spending)
+	return render_template('index.html', user=g.user, messages=messages, users=users)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
