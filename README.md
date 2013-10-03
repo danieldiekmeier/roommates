@@ -3,7 +3,7 @@ roommates
 
 Organize your shared living environment.
 
-# Installation
+## Installation
 
 It's simple, really. If you want to check it out locally, just
 ```
@@ -19,7 +19,7 @@ Then go to http://127.0.0.1:1337. Roommates comes with a simple setup where you 
 
 If you want to install it on your server, the excact installation may differ, but the Flask documentation for deploying is quite good: http://flask.pocoo.org/docs/deploying/
 
-# config.py
+## config.py
 
 If you have trouble with creating a `config.py` with the setup, here is what it should consist of:
 
@@ -32,6 +32,6 @@ UPLOAD_FOLDER = u'/Users/<You>/dev/python/roommates/roommates/uploads'
 SECRET_KEY = u'this has to be extremely seecret'
 ```
 
-# Database
+## Database
 
 The roommates-Subfolder contains a schema.sql that can help you setting up the SQLite-Database if the setup doesn't work.
