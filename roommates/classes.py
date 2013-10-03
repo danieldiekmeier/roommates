@@ -56,9 +56,11 @@ class User:
 		part_list = range(1, number_of_users+1)
 		list = []
 		list.append(part_list[:])
+
 		for i in xrange(number_of_users-1):
 			part_list.append(part_list.pop(0))
 			list.append(part_list[:])
+
 		errand_number = list[user_number-1][(week % number_of_users)-1] - 1
 
 		errand_ids = query_db('SELECT id FROM errands ORDER BY id ASC')

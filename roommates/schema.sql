@@ -1,7 +1,7 @@
 
 
 CREATE TABLE "errands" (
-"id" INTEGER,
+"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 "title" TEXT
 );
 
