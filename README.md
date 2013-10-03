@@ -1,6 +1,8 @@
 roommates
 =========
 
+![screenshot](https://s3-eu-west-1.amazonaws.com/51e3d489f1e/2013-10-03-06-52-35-524da0d39c392.png)
+
 Organize your shared living environment.
 
 ## Installation
