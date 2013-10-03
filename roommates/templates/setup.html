@@ -7,7 +7,7 @@
 
 		<h2>Welcome to Roommates</h2>
 		<p>To get started, we'll have to create <strong>database</strong>, a <strong>configuration file</strong> with your configuration in it and the first <strong>user account</strong>, so you can log in and create accounts for your roommates.</p>
-		<p>If you want to set Roommates up manually or this setup client doesn't work for you, just go to <a href="{{ url_for('setup', step=1337) }}">Step 1337.</a></p>
+		<<!--<p>If you want to set Roommates up manually or this setup client doesn't work for you, just go to <a href="{{ url_for('setup', step=1337) }}">Step 1337.</a></p>-->
 
 		<div class="clearfix">
 			<a href="{{ url_for('setup', step=step+1) }}" class="button main">Go To Setup</a>
@@ -55,6 +55,9 @@
 		</form>
 
 	{% elif step == 2 %}
+		<h2>Setup complete</h2>
+		<p>That should be all. You now have to restart python/this app so your settings are properly loaded, then just go to /login and log in with the credentials you just put in the form.</p>
+		<p>If there are any problems, look at the <a href="https://github.com/danieldiekmeier/roommates">repository</a> for help with the config.py and Roommates in general.</p>
 
 	{% endif %}
 

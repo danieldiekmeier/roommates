@@ -40,9 +40,12 @@ class User:
 		return expenses
 
 	def spending(self):
-		spending_sum = query_db('SELECT SUM(amount) AS sum FROM receipts', one=True)['sum']
-		self._spending =  query_db('SELECT SUM(amount) AS sum FROM receipts WHERE user = ?', [self.id], one=True)['sum'] - (spending_sum/3)
-		return self._spending
+		try:
+			spending_sum = query_db('SELECT SUM(amount) AS sum FROM receipts', one=True)['sum']
+			self._spending =  query_db('SELECT SUM(amount) AS sum FROM receipts WHERE user = ?', [self.id], one=True)['sum'] - (spending_sum/count_users())
+			return self._spending
+		except TypeError:
+			return 0
 
 	def errand(self):
 
@@ -70,7 +73,10 @@ class User:
 			errand = Errand( errand_id['id'] )
 			errands.append(errand)
 
-		return errands[errand_number]
+		try:
+			return errands[errand_number]
+		except IndexError:
+			return "None"
 
 	def reminders(self):
 		roommates = query_db('SELECT id FROM users')
@@ -93,6 +99,9 @@ def list_users():
 		user = User(user_id['id'])
 		users.append(user)
 	return users
+
+def count_users():
+	return query_db('SELECT COUNT(id) AS count FROM users', one=True)['count']
 
 
 class Errand:
