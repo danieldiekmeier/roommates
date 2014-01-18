@@ -2,6 +2,7 @@ import sqlite3
 from roommates.helpers import query_db
 from datetime import datetime
 from markdown import markdown
+import arrow
 
 date_format = "%Y-%m-%d"
 
@@ -191,12 +192,13 @@ class Purchase:
 		self.id = purchase['id']
 		self.title = purchase['title']
 		self.amount = purchase['amount']
-		self.date = datetime.strptime(purchase['date'], '%Y-%m-%d')
+		self.date = arrow.get(purchase['date'], 'YYYY-MM-DD')
 		return None
 	def __str__(self):
 		return unicode(self.author.name) + ': ' + unicode(self.purchase)
 	def current_value(self):
-		today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+		# today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+		today = arrow.now('Europe/Berlin').replace(hour=0, minute=0, second=0, microsecond=0)
 
 		temp_date = self.date
 		months = 0
@@ -206,7 +208,7 @@ class Purchase:
 			return self.amount
 
 		while temp_date < today:
-			temp_date = temp_date.replace(month = temp_date.month + 1)
+			temp_date = temp_date.replace(months=+1)
 			months += 1
 
 		if months >= 30:

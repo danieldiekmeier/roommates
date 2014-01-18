@@ -3,8 +3,11 @@ Jinja2==2.7
 Markdown==2.3.1
 MarkupSafe==0.18
 Werkzeug==0.9.1
+arrow==0.4.2
 bcrypt==1.0.2
 cffi==0.6
 itsdangerous==0.22
 pycparser==2.09.1
+python-dateutil==2.2
+six==1.5.2
 wsgiref==0.1.2
