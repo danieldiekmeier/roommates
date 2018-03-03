@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, jsonify
-import sqlite3, datetime, bcrypt
-from contextlib import closing # for database-things
-
-import os
+import bcrypt
 
 # create our little application
 app = Flask(__name__)
@@ -16,8 +11,8 @@ except IOError:
 	app.config['HAS_CONFIG'] = False
 
 
-from roommates.helpers import *
-from roommates.classes import *
+from roommates.helpers import connect_db, check_config, login_required, query_db
+from roommates.classes import User, Message, list_users
 from roommates.users import *
 from roommates.wiki import *
 from roommates.messages import *
@@ -27,20 +22,18 @@ from roommates.setup import *
 
 app.create_jinja_environment()
 
-def connect_db():
-	return sqlite3.connect(app.config['DATABASE'])
 
 @app.before_request
 def before_request():
 	if app.config['HAS_CONFIG']:
 		g.db = connect_db()
 
+
 @app.teardown_request
 def teardown_request(exception):
 	if app.config['HAS_CONFIG']:
 		g.db.close()
 
-# VIEWS
 
 @app.route("/")
 @check_config
@@ -54,21 +47,27 @@ def index():
 		message = Message(message_id['id'])
 		messages.append(message)
 
-
 	users = list_users()
 
 	return render_template('index.html', user=g.user, messages=messages, users=users)
 
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
 	if request.method == 'POST':
-
 		user = query_db('SELECT * FROM users WHERE mail = ?', [request.form['mail']], one=True)
+
+		print(type(user))
+		print(str(user['password']))
+
 		if user is None:
 			flash('Login nicht erfolgreich.', 'error')
 			return render_template('login.html')
 		else:
-			if bcrypt.hashpw(str(request.form['password']), str(user['password'])) == user['password']:
+			if bcrypt.hashpw(
+				request.form['password'].encode('utf-8'),
+				user['password'].decode('utf-8').encode('utf-8')
+			) == user['password']:
 				session['id'] = user['id']
 				flash('You are now logged in.')
 				return redirect(url_for('index'))
@@ -77,6 +76,7 @@ def login():
 				return render_template('login.html')
 	else:
 		return render_template('login.html')
+
 
 @app.route("/logout", methods=['GET'])
 @login_required

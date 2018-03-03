@@ -1,15 +1,8 @@
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, jsonify
-import sqlite3, datetime, bcrypt
-from contextlib import closing # for database-things
-
-import os
-import codecs
+from flask import request, g, redirect, url_for, render_template
+import bcrypt
 
 from roommates import app
-from roommates.helpers import *
-from roommates.classes import *
-
-import bcrypt
+from roommates.helpers import add_line, init_db, connect_db, no_config
 
 import string
 import random
@@ -20,9 +13,8 @@ import random
 def setup(step):
 	if request.method == 'POST':
 		if step == 1:
-
 			# CREATE THE CONFIG.PY
-			config_file = '# -*- coding: utf-8 -*-'
+			config_file = ''
 			config_file = add_line(config_file, 'TITLE', request.form['title'])
 			config_file = add_line(config_file, 'DATABASE', request.form['database'])
 			config_file = add_line(config_file, 'CURRENCY', request.form['currency'])
@@ -31,9 +23,8 @@ def setup(step):
 			random_string = ''.join(random.choice( string.ascii_uppercase + string.ascii_lowercase + string.digits ) for x in range (24))
 			config_file = add_line(config_file, 'SECRET_KEY', random_string)
 
-
-			output_file = codecs.open('roommates/config.py', 'w+', encoding='utf-8')
-			output_file.write(unicode(config_file))
+			with open('roommates/config.py', 'w') as file:
+				file.write(config_file)
 
 			# LOAD THE CONFIG.PY
 			app.config.from_pyfile('config.py')
@@ -50,7 +41,7 @@ def setup(step):
 				request.form["last_name"],
 				request.form["mail"],
 				request.form["birthday"],
-				bcrypt.hashpw(str(request.form["password"]), bcrypt.gensalt())
+				bcrypt.hashpw(request.form["password"].encode('utf-8'), bcrypt.gensalt())
 			])
 			g.db.commit()
 

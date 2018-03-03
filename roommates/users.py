@@ -1,8 +1,8 @@
 from roommates import app
-from roommates.helpers import *
-from roommates.classes import *
+from roommates.helpers import login_required, query_db
+from roommates.classes import User
 
-from flask import session, redirect, url_for, g, request, flash, render_template
+from flask import redirect, url_for, g, request, flash, render_template
 import bcrypt
 
 @app.route("/users", methods=['GET'])
@@ -14,7 +14,6 @@ def users():
 		temp_user = User(user_id['id'])
 		users.append(temp_user)
 	return render_template('users.html', users = users)
-
 
 
 @app.route("/users/add", methods=['GET', 'POST'])
@@ -30,11 +29,12 @@ def users_add():
 				request.form["last_name"],
 				request.form["mail"],
 				request.form["birthday"],
-				bcrypt.hashpw(str(request.form["password"]), bcrypt.gensalt())
+				bcrypt.hashpw(request.form["password"].encode('utf-8'), bcrypt.gensalt())
 			])
 		g.db.commit()
 		flash('The new user "' + request.form['name'] + ' ' + request.form['last_name'] + '" has been added.')
 	return render_template('users_add.html', values=[])
+
 
 @app.route("/remove_user/<id>", methods=['GET'])
 @login_required

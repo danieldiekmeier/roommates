@@ -14,7 +14,8 @@ class User:
 		return None
 
 	def __str__(self):
-		return unicode(self.name) + ' ' + unicode(self.last_name)
+		return self.name + ' ' + self.last_name
+
 	def __repr__(self):
 		return self.__str__()
 
@@ -57,19 +58,17 @@ class User:
 
 		user_number = next(index for (index, d) in enumerate(users) if d["id"] == self.id)
 
-		part_list = range(1, number_of_users+1)
-		list = []
-		list.append(part_list[:])
+		part_list = list(range(1, number_of_users + 1))
+		other_list = []
+		other_list.append(part_list[:])
 
-		for i in xrange(number_of_users-1):
+		for i in range(number_of_users - 1):
 			part_list.append(part_list.pop(0))
-			list.append(part_list[:])
+			other_list.append(part_list[:])
 
-		errand_number = list[user_number-1][(week % number_of_users)-1] - 1
+		errand_number = other_list[user_number-1][(week % number_of_users)-1] - 1
 
 		errand_ids = query_db('SELECT id FROM errands ORDER BY id ASC')
-
-		print errand_ids
 
 		errands = []
 		for errand_id in errand_ids:
@@ -139,12 +138,7 @@ class Wiki:
 
 class Page:
 	def __init__(self, param):
-		if param == unicode(param):
-			key = param
-			page = query_db('SELECT * FROM wiki WHERE key = ?', [key], one=True)
-		else:
-			id = param
-			page = query_db('SELECT * FROM wiki WHERE id = ?', [id], one=True)
+		page = query_db('SELECT * FROM wiki WHERE key = ?', [param], one=True)
 
 		if page == None:
 			self.exists = False
@@ -182,7 +176,7 @@ class Message:
 		self.datetime = datetime.strptime(message['date'], '%Y-%m-%d %H:%M:%S.%f')
 		return None
 	def __str__(self):
-		return unicode(self.author.name) + ': ' + unicode(self.message)
+		return self.author.name + ': ' + self.message
 
 
 
@@ -195,7 +189,7 @@ class Purchase:
 		self.date = arrow.get(purchase['date'], 'YYYY-MM-DD')
 		return None
 	def __str__(self):
-		return unicode(self.author.name) + ': ' + unicode(self.purchase)
+		return self.author.name + ': ' + self.purchase
 	def current_value(self):
 		# today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 		today = arrow.now('Europe/Berlin').replace(hour=0, minute=0, second=0, microsecond=0)

@@ -38,7 +38,7 @@ class RoommatesTestCase(unittest.TestCase):
 				user["last_name"],
 				user["mail"],
 				user["birthday"],
-				bcrypt.hashpw(user["password"], bcrypt.gensalt())
+				bcrypt.hashpw(user["password"].encode('utf-8'), bcrypt.gensalt())
 			])
 		the_db.commit()
 		the_db.close()
